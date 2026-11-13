@@ -1,0 +1,96 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es" class="bg-void text-bone antialiased selection:bg-crimson selection:text-bone">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  </head>
+  <body class="min-h-screen flex flex-col justify-between bg-void text-bone font-sans font-light relative overflow-x-hidden">
+    
+    <!-- SISTEMA DE CAPAS DE FONDO -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+      <!-- Capa 0: Luz cenital oscura -->
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_#191416_0%,_#080809_55%,_#030303_100%)]"></div>
+      
+      <!-- Capa 1: Retícula técnica desvanecida -->
+      <div class="absolute inset-0 bg-architectural-grid"></div>
+
+      <!-- Capa 2A: Halo atmosférico carmesí profundo -->
+      <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[680px] h-[380px] rounded-full bg-crimson/12 blur-[130px]"></div>
+      <div class="absolute top-[45%] -right-40 w-[500px] h-[500px] rounded-full bg-neutral-700/10 blur-[140px]"></div>
+
+      <!-- Capa 2B: Topografía / Cauces orgánicos en SVG -->
+      <svg class="absolute inset-0 w-full h-full opacity-[0.14]" viewBox="0 0 1440 900" fill="none" preserveAspectRatio="xMidYMid slice">
+        <path d="M-120 180 C 240 60, 480 340, 860 210 C 1180 100, 1340 260, 1580 190" stroke="#A3A3A3" stroke-width="0.8"/>
+        <path d="M-120 215 C 260 95, 490 375, 870 245 C 1190 135, 1350 295, 1580 225" stroke="#737373" stroke-width="0.6"/>
+        <path d="M-120 250 C 280 130, 500 410, 880 280 C 1200 170, 1360 330, 1580 260" stroke="#B91C1C" stroke-width="0.7" stroke-opacity="0.7"/>
+        <path d="M-100 680 C 320 560, 620 820, 1020 650 C 1260 550, 1420 710, 1600 640" stroke="#525252" stroke-width="0.7"/>
+        <path d="M-100 720 C 340 600, 640 860, 1040 690 C 1280 590, 1440 750, 1600 680" stroke="#404040" stroke-width="0.5"/>
+        <circle cx="1140" cy="240" r="220" stroke="#262626" stroke-width="0.8" stroke-dasharray="4 6"/>
+        <circle cx="1140" cy="240" r="140" stroke="#B91C1C" stroke-width="0.6" stroke-opacity="0.4"/>
+      </svg>
+    </div>
+
+    <!-- Barra de progreso de lectura -->
+    <div id="read-progress" class="fixed top-0 left-0 h-[2px] bg-crimson z-50 transition-all duration-75" style="width: 0%"></div>
+
+    <header class="border-b border-wire/80 sticky top-0 bg-void/75 backdrop-blur-xl z-40">
+      <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+        <a href="/" class="flex items-center gap-3 group">
+          <span class="w-2 h-2 bg-crimson inline-block group-hover:rotate-45 transition-transform duration-300"></span>
+          <span class="font-mono text-xs uppercase tracking-[0.25em] text-bone font-medium">
+            BITÁCORA DE MIS TRIPAS
+          </span>
+        </a>
+        <div class="flex items-center gap-6 font-mono text-[11px] uppercase tracking-widest text-pewter">
+          <span class="hidden sm:inline">4°35′N 74°04′O</span>
+          <span class="text-bone/90 border border-wire bg-obsidian/80 px-2.5 py-0.5">Archivo Vivo</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="w-full max-w-5xl mx-auto px-6 py-12 sm:py-20 flex-grow relative z-10">
+      <slot />
+    </main>
+
+    <footer class="border-t border-wire/80 bg-obsidian/80 backdrop-blur-md relative z-10">
+      <div class="max-w-5xl mx-auto px-6 py-8 space-y-4 font-mono text-[11px] uppercase tracking-widest text-pewter">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+          <div>
+            <span class="text-bone">EXPEDIENTE DE RECONSTRUCCIÓN</span> · SIN ANESTESIA
+          </div>
+          <div>
+            BOGOTÁ · 2026
+          </div>
+        </div>
+        <div class="border-t border-wire/50 pt-4 text-[10px] text-pewter/80 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+          <span>ARQUITECTURA DE CÓDIGO Y VISUALES CONSTRUIDOS CON ASISTENCIA DE IA</span>
+          <span class="text-bone/70">TEXTOS Y VIVENCIAS · 100 % AUTORÍA HUMANA</span>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      window.addEventListener('scroll', () => {
+        const winScroll = document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+        const bar = document.getElementById('read-progress');
+        if (bar) bar.style.width = scrolled + '%';
+      });
+    </script>
+  </body>
+</html>
